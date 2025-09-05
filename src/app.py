@@ -1,6 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
+import socket
 
 app = Flask(__name__)
+
+def fetchDetails():
+    hostname = socket.gethostname()
+    ip = socket.gethostbyname(hostname)
+    return str(hostname), str(ip)
 
 @app.route("/")
 def home():
@@ -9,6 +15,11 @@ def home():
 @app.route("/health")
 def health_check():
     return jsonify(status="Healthy")
+
+@app.route("/details")
+def details():
+    hostname, ip = fetchDetails()
+    return render_template("index.html", hostname=hostname , ip=ip)
 
 if __name__ == "__main__":
     # Bind to 0.0.0.0 so it works inside Docker
