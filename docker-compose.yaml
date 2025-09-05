@@ -1,17 +1,38 @@
 version: "3.9"
 
 services:
-  web:
-    build:
-     context: .
-    image: "flask-webapp:v2"
-    ports:
-      - "5000:5000"
-    restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 5s
+  web-app1:
+    build: .
+    container_name: web_app1
+    environment:
+      - APP_NAME=Web-App1
+    expose:
+      - "5000"
 
+  web-app2:
+    build: .
+    container_name: web_app2
+    environment:
+      - APP_NAME=Web-App2
+    expose:
+      - "5000"
+
+  web-app3:
+    build: .
+    container_name: web_app3
+    environment:
+      - APP_NAME=Web-App3
+    expose:
+      - "5000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web-app1
+      - web-app2
+      - web-app3
