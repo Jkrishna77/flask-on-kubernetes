@@ -8,6 +8,12 @@ services:
       - APP_NAME=Web-App1
     expose:
       - "5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   web-app2:
     build: .
@@ -16,6 +22,12 @@ services:
       - APP_NAME=Web-App2
     expose:
       - "5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   web-app3:
     build: .
@@ -24,6 +36,12 @@ services:
       - APP_NAME=Web-App3
     expose:
       - "5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   nginx:
     image: nginx:alpine
